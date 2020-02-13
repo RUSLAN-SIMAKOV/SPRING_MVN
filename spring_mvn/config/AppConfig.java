@@ -13,10 +13,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import spring_mvn.model.User;
 
 @Configuration
-@ComponentScan(basePackages = {
-		"spring_mvn.service",
-		"spring_mvn.dao"
-})
+@ComponentScan(basePackages = { "spring_mvn.service", "spring_mvn.dao" })
 public class AppConfig {
 
 	@Bean
@@ -28,16 +25,16 @@ public class AppConfig {
 		dataSource.setPassword("1");
 		return dataSource;
 	}
-	
+
 	@Bean
 	public LocalSessionFactoryBean getSessionFactory() {
 		LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
 		localSessionFactoryBean.setDataSource(getDataSource());
-		
+
 		Properties properties = new Properties();
 		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.hbm2ddl.auto", "create-drop");
-		
+
 		localSessionFactoryBean.setHibernateProperties(properties);
 		localSessionFactoryBean.setAnnotatedClasses(User.class);
 		return localSessionFactoryBean;

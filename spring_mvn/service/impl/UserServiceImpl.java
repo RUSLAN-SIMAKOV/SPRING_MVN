@@ -17,11 +17,9 @@ public class UserServiceImpl implements UserService {
 
 	public void add(User user) {
 		userDao.add(user);
-
 	}
 
 	public List<User> listUsers() {
 		return userDao.listUsers();
 	}
-
 }

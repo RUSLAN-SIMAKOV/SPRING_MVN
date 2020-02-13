@@ -6,7 +6,7 @@ import spring_mvn.model.User;
 
 public interface UserService {
 
-	   void add(User user);
-	      
-       List<User> listUsers();
+	void add(User user);
+
+	List<User> listUsers();
 }
