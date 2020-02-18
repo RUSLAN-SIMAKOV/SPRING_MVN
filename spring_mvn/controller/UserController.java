@@ -4,8 +4,8 @@ import spring_mvn.UserResponseDto;
 import spring_mvn.model.User;
 import spring_mvn.service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,24 +30,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
-    public UserResponseDto get(@PathVariable Integer userId) {
-        User user = userService.listUsers().get(--userId);
-        UserResponseDto userDto = new UserResponseDto();
-        userDto.setName(user.getName());
-        userDto.setSex(user.getSex());
-        return userDto;
+    public UserResponseDto get(@PathVariable Long userId) {
+        GetDto getDto = new GetDto();
+        User user = userService.listUsers().get(Math.toIntExact(--userId));
+        return getDto.getDto(user);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<UserResponseDto> getAll() {
         List<User> users = userService.listUsers();
-        List<UserResponseDto> usersDto = new ArrayList<>();
-        for (User user : users) {
+        GetDto getDto = new GetDto();
+        return users.stream().map(u -> getDto.getDto(u)).collect(Collectors.toList());
+    }
+
+    private class GetDto {
+
+        private UserResponseDto getDto(User user) {
             UserResponseDto userDto = new UserResponseDto();
             userDto.setName(user.getName());
             userDto.setSex(user.getSex());
-            usersDto.add(userDto);
+            return userDto;
         }
-        return usersDto;
     }
 }
