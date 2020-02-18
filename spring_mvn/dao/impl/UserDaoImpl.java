@@ -23,6 +23,11 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+	public User getUser(Long id) {
+		return sessionFactory.openSession().get(User.class, id);
+	}
+
+	@Override
 	public List<User> listUsers() {
 		TypedQuery<User> q = sessionFactory.openSession().createQuery("from User", User.class);
 		return q.getResultList();
