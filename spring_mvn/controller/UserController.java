@@ -31,19 +31,15 @@ public class UserController {
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public UserResponseDto get(@PathVariable Long userId) {
-        GetDto getDto = new GetDto();
-        User user = userService.listUsers().get(Math.toIntExact(--userId));
-        return getDto.getDto(user);
+        User user = userService.getUser(userId);
+        return getDto(user);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<UserResponseDto> getAll() {
         List<User> users = userService.listUsers();
-        GetDto getDto = new GetDto();
-        return users.stream().map(u -> getDto.getDto(u)).collect(Collectors.toList());
+        return users.stream().map(this::getDto).collect(Collectors.toList());
     }
-
-    private class GetDto {
 
         private UserResponseDto getDto(User user) {
             UserResponseDto userDto = new UserResponseDto();
@@ -51,5 +47,4 @@ public class UserController {
             userDto.setSex(user.getSex());
             return userDto;
         }
-    }
 }
